@@ -1,0 +1,78 @@
+{% extends "base.html.twig" %}
+
+{% block titre %}Liste des auteurs{% endblock %}
+
+{% block contenu %}
+    {% if message|length > 0 %}
+        <div class="alert alert-{{message.type}}">
+            {{message.contenu}}
+        </div>
+    {% endif %}
+    
+    <table class="table text-center monTableau" id="tableauLivres">
+        <thead>
+            <tr class="table-dark">
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Nombres de livres</th>
+                <th colspan="2">Actions</th>
+            </tr>
+        </thead>
+        
+        
+            <tbody>
+                {% for auteur in auteurs %}
+                    <tr>
+                        <td class="align-middle"><a href="/auteurs/{{auteur._id}}">{{auteur.nom}}</a></td>
+                        <td class="align-middle">{{auteur.prenom}}</td>
+                        <td class="align-middle">{{auteur.livres|length}}</td>
+                        
+                        <td class="align-middle">
+                            <a href="/auteurs/modification/{{auteur.id}}" class="btn btn-warning">Modifier</a>
+                        </td>
+                        
+                        <td class="align-middle">
+                            <form method="POST" action="/auteurs/delete/{{auteur.id}}" onSubmit ="return confirm('voulez-vous vraiment Supprimer ?');">
+                                <button type="submit" class="btn btn-danger">Suprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>  
+    </table>
+
+    <button onClick="afficherFormulaire()" class="btn btn-success w-100">Ajouter</button>
+
+    <form id="ajoutForm" method="POST" action="" class="d-none">
+        <fieldset>
+            <legend>Ajouter un Auteur</legend>
+
+                <div class="form-group">
+                    <label for="nom">Nom</label>
+                    <input type="text" class="form-control" id="nom" name="nom"/>
+                </div>
+                
+                <div class="form-group">
+                    <label for="prenom">Prénom</label>
+                    <input type="text" class="form-control" id"prenom" name="prenom" />
+                </div>
+                
+                <div class="form-group">
+                    <label for="age">Age</label>
+                    <input type="number" class="form-control" id="age" name="age"/>
+                </div>
+                
+                <div class="form-group">
+                <p> Sexe : </p>
+                    <input type="radio" id="homme" name="sexe" value="true">
+                    <label for="homme">Homme</label>
+                    <input type="radio" id="femme" name="sexe" value="false">
+                    <label for="femme">Femme</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary my-3">Valider</button>
+        </fieldset>
+    </form>
+
+    <script src="/javascript/ajoutLivre.js"></script>
+{% endblock %}
